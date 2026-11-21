@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="sr-Cyrl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Raskorak crawler · Робот Раскорака</title>
+  <meta name="description" content="Who runs the Raskorak crawler, what it reads, the rules it follows and how to reach us. Ко води робот Раскорака, шта чита, која правила поштује и како да нам пишете.">
+  <style>
+    :root { --ink: #14161a; --muted: #5b6270; --line: #d9dce1; --band: #12233f; --paper: #ffffff; }
+    @media (prefers-color-scheme: dark) {
+      :root { --ink: #e8eaee; --muted: #a3a9b5; --line: #343a44; --band: #0b1830; --paper: #111317; }
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--paper); color: var(--ink);
+      font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    header { background: var(--band); color: #fff; padding: 2.5rem 1.25rem 2rem; }
+    header .wrap, main { max-width: 44rem; margin: 0 auto; }
+    header p { margin: .25rem 0 0; color: #c9d2e3; }
+    h1 { margin: 0; font-size: 1.75rem; line-height: 1.25; }
+    nav { margin-top: 1.25rem; }
+    nav a { color: #fff; margin-right: 1.25rem; }
+    main { padding: 1rem 1.25rem 4rem; }
+    section.lang { border-top: 1px solid var(--line); padding-top: 1.5rem; margin-top: 2rem; }
+    section.lang:first-of-type { border-top: 0; margin-top: 0; }
+    h2 { font-size: 1.35rem; margin: 0 0 1rem; }
+    h3 { font-size: 1.05rem; margin: 1.75rem 0 .5rem; }
+    p, ul { margin: 0 0 1rem; }
+    ul { padding-left: 1.25rem; }
+    li { margin-bottom: .35rem; }
+    code, pre { font: 15px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    pre { border: 1px solid var(--line); padding: .75rem 1rem; overflow-x: auto; margin: 0 0 1rem; }
+    a { color: inherit; text-underline-offset: .2em; }
+    .muted { color: var(--muted); font-size: .95rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Raskorak crawler<br>Робот Раскорака</h1>
+      <p>Raskorak/0.1</p>
+      <nav aria-label="Language"><a href="#sr" hreflang="sr-Cyrl">Српски</a><a href="#en" hreflang="en">English</a></nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="lang" id="sr" lang="sr-Cyrl">
+      <h2>Српски</h2>
+
+      <h3>Ко смо</h3>
+      <p>Раскорак је јавна евиденција о томе како медији у Србији извештавају о истим догађајима: где се њихове верзије разликују и када се текст измени после објављивања. Раскорак не процењује ко је у праву, не објављује туђе вести као своје и увек води на изворни чланак. Није регистровани медиј.</p>
+      <p>Раскорак је у развоју. Робот тренутно прикупља пробну архиву за мањи списак медија.</p>
+
+      <h3>Како се представља</h3>
+      <p>Сваки захтев робота носи овај User-Agent:</p>
+      <pre>Raskorak/0.1 (+https://raskorak.com)</pre>
+
+      <h3>Шта чита</h3>
+      <ul>
+        <li>Само јавно доступне странице: рубрике политика, економија и друштво, њихове RSS изворе и мапе сајта, и чланке који се у њима појаве.</li>
+        <li>Нове чланке тражи на сваких 15 минута.</li>
+        <li>Сваки чланак учита када га пронађе, па поново после 1 сата, 6 сати, 24 сата, 72 сата, 7 дана и 30 дана, да би се видело да ли је текст измењен.</li>
+        <li>Не пријављује се ни на један налог и не заобилази наплату садржаја. Чланак иза наплате бележи се као делимичан.</li>
+      </ul>
+
+      <h3>Која правила поштује</h3>
+      <ul>
+        <li>Поштује <code>robots.txt</code> сваког сајта. Ако сајт забрани приступ, робот га не учитава.</li>
+        <li>Шаље највише један захтев на сваке 2 секунде по домену.</li>
+      </ul>
+      <p>Ако желите да робот не учитава ваш сајт, додајте у <code>robots.txt</code>:</p>
+      <pre>User-agent: Raskorak
+Disallow: /</pre>
+
+      <h3>Шта чува и зашто</h3>
+      <ul>
+        <li>HTML странице се не чува. Чува се само његов отисак (hash).</li>
+        <li>Пун текст чланка чува се као радна копија најдуже 7 дана од првог учитавања, док траје анализа, а затим се брише.</li>
+        <li>Трајно се чувају наслов, отисци реченица сваке верзије, по којима се препознаје каснија измена, реченице које служе као доказ измене или разлике између медија, и подаци о учитавању: време и одговор сервера.</li>
+        <li>Свака сачувана реченица приказује се само као означен цитат, са везом ка изворном чланку и временом учитавања.</li>
+        <li>Дневници рада не садрже текст чланака.</li>
+      </ul>
+      <p>Све ово постоји да би се могло показати шта је објављено и када, и шта је касније измењено, увек са доказом и везом ка извору.</p>
+
+      <h3>Контакт</h3>
+      <p>Ако робот оптерећује ваш сервер, ако желите да промените приступ или имате питање, пишите на <a href="mailto:CONTACT_EMAIL">devlazarbusiness@gmail.com</a>.</p>
+    </section>
+
+    <section class="lang" id="en" lang="en">
+      <h2>English</h2>
+
+      <h3>Who we are</h3>
+      <p>Raskorak is a public record of how media in Serbia report the same events: where their versions differ, and when a text changes after it is published. Raskorak does not judge who is right, never presents other outlets' news as its own, and always links to the original article. It is not a registered media outlet.</p>
+      <p>Raskorak is in development. The crawler is currently collecting a test archive for a short list of outlets.</p>
+
+      <h3>How it identifies itself</h3>
+      <p>Every request the crawler makes carries this User-Agent:</p>
+      <pre>Raskorak/0.1 (+https://raskorak.com)</pre>
+
+      <h3>What it reads</h3>
+      <ul>
+        <li>Publicly reachable pages only: the politics, economy and society sections, their RSS feeds and sitemaps, and the articles that appear in them.</li>
+        <li>It looks for new articles every 15 minutes.</li>
+        <li>It reads each article when it finds it, and again after 1 hour, 6 hours, 24 hours, 72 hours, 7 days and 30 days, to see whether the text changed.</li>
+        <li>It never signs in to an account and never gets around a paywall. An article behind a paywall is recorded as partial.</li>
+      </ul>
+
+      <h3>The rules it follows</h3>
+      <ul>
+        <li>It obeys each site's <code>robots.txt</code>. When a site disallows access, the crawler does not fetch it.</li>
+        <li>It sends at most one request every 2 seconds to each domain.</li>
+      </ul>
+      <p>To keep the crawler off your site, add this to your <code>robots.txt</code>:</p>
+      <pre>User-agent: Raskorak
+Disallow: /</pre>
+
+      <h3>What it stores, and why</h3>
+      <ul>
+        <li>The HTML of a page is never stored. Only its hash is.</li>
+        <li>The full text of an article is kept as a working copy for at most 7 days after it is first read, while analysis runs, and is then deleted.</li>
+        <li>Kept for good: the headline, a fingerprint of each sentence of every version, by which a later change is recognised, the sentences that serve as evidence of a change or of a difference between outlets, and the details of each fetch: the time and the server's response.</li>
+        <li>Every kept sentence is shown only as a marked quote, with a link to the original article and the time it was read.</li>
+        <li>Logs hold no article text.</li>
+      </ul>
+      <p>All of this exists so that what was published, when, and what was changed later can be shown, always with evidence and a link to the source.</p>
+
+      <h3>Contact</h3>
+      <p>If the crawler puts load on your server, if you want to change its access, or if you have a question, write to <a href="mailto:CONTACT_EMAIL">devlazarbusiness@gmail.com</a>.</p>
+    </section>
+
+    <p class="muted">Последња измена / Last updated: 21. 11. 2026.</p>
+  </main>
+</body>
+</html>
